@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=sistemas
+      - DB_PASSWORD=k0bayashi
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+  
+  db:
+    image: mariadb
+    volumes:
+      - dev-db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=uC&78u02
+      - MYSQL_DATABASE=devdb
+      - MYSQL_USER=sistemas
+      - MYSQL_PASSWORD=k0bayashi
+    ports:
+      - "3316:3306"
+    networks:
+      - mynetwork
+
+volumes:
+  dev-db-data:
+
+networks:
+  mynetwork:
