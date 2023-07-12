@@ -82,20 +82,20 @@ def get_error(order: str):
 
 # Ruta para actualizar un registro por su Pedido
 @app.put("/errors_odoo/{order}")
-def update_error(order: str, error_message: str):
+def update_error(error_object: OdooOracleError):
     # Crea una sesión para la operación
     db = SessionLocal()
 
     # Busca el registro por su ID
-    error = db.query(OdooOracleErrors).filter(OdooOracleErrors.order == order).first()
+    error = db.query(OdooOracleErrors).filter(OdooOracleErrors.order == error_object.order).first()
 
     # Si no se encuentra el registro, devuelve un error 404
     if not error:
         raise HTTPException(status_code=404, detail="Error not found")
 
     # Actualiza los campos del registro
-    error.order = order
-    error.error_message = error_message
+    error.order = error_object.order
+    error.error_message = error_object.error_message
 
     # Guarda los cambios en la base de datos
     db.commit()
