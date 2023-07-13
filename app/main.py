@@ -63,6 +63,19 @@ def create_error(error_object: OdooOracleError):
 
     return new_error
 
+@app.get("/errors_odoo")
+def get_all_errors():
+    # Crea una sesión para la operación
+    db = SessionLocal()
+
+    # Busca el registro por su ID
+    error = db.query(OdooOracleErrors)
+
+    # Si no se encuentra el registro, devuelve un error 404
+    if not error:
+        raise HTTPException(status_code=404, detail="Error not found")
+
+    return error
 
 # Ruta para obtener un registro por su Pedido
 @app.get("/errors_odoo/{order}")
