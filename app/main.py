@@ -69,7 +69,7 @@ def get_all_errors():
     db = SessionLocal()
 
     # Busca el registro por su ID
-    error = db.query(OdooOracleErrors)
+    error = db.query(OdooOracleErrors).all()
 
     # Si no se encuentra el registro, devuelve un error 404
     if not error:
